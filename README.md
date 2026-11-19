@@ -1,6 +1,6 @@
 # LeNet-5 FPGA AI Accelerator — C5 Layer · Weight BRAM Controller · Classifier
 
-> RTL blocks I designed for a LeNet-5 inference accelerator on AWS FPGA — 75 MACs/cycle mapped 1:1 to DSP slices, 4-stage pipeline, 140MHz timing closure. Grand Prize (최우수상), 2nd AI Semiconductor Talent Competition, Dec 2025.
+> RTL blocks I designed for a LeNet-5 inference accelerator on AWS EC2 F2 FPGA — 75 MACs/cycle mapped 1:1 to DSP slices, 4-stage pipeline, C5 layer alone met 140MHz with WNS +2.543ns. Grand Prize (최우수상), 2nd AI Semiconductor Talent Competition, Dec 2025.
 
 ## 프로젝트 개요
 제2회 AI 반도체 기술인재 선발대회(팀 4인) 출품작 — AWS FPGA 환경에서 LeNet-5 추론 가속기를 구현해 MNIST 판정 이미지 10장의 정확도와 처리 성능을 겨루는 대회였습니다. 팀 결과: **판정 이미지 10장 전수 일치, SW 대비 5.13배 가속, 최우수상(정보통신산업진흥원장상, 2025.12)**.
@@ -16,13 +16,13 @@
 | `src/jby_top.v` | 담당 블록 통합 top | c5_conv + c5_bram_controller 연결 래퍼 |
 
 ## 핵심 결과
-- **140MHz Timing Closure** — 합성 후 Timing Violation을 Critical Path 분석으로 해결
+- **140MHz Timing Closure** — 곱셈과 덧셈이 한 단에 몰리지 않도록 4단 파이프라인으로 나눠, C5 단독 구현에서 140MHz WNS +2.543ns (같은 C5 를 120MHz 로 구현하면 WNS +3.538ns). 팀 가속기 전체도 요구 100MHz 보다 40% 높은 140MHz 에서 구현 (WNS +0.019ns, 팀 통합 결과)
 - 시뮬레이션 불일치 디버깅: 기대값 수계산·파형 단계별 대조·입력 파일 바이트 단위 대조로 원인을 입력 데이터 순서 문제로 특정
 - 판정 이미지 10장 전수 일치 · SW 대비 5.13배 가속 (팀 통합 결과)
 
 ## 참고
 - 가중치 hex·메모리 프리미티브·통합 시뮬레이션 환경은 팀 공동 자산이라 미포함 — 모듈 인터페이스는 각 파일의 포트 선언 참조.
-- 환경: Verilog HDL, Xilinx Vivado (합성·구현·타이밍 분석), AWS FPGA
+- 환경: Verilog HDL, Xilinx Vivado (합성·구현·타이밍 분석), AWS EC2 F2 (AMD Virtex UltraScale+ HBM VU47P, xcvu47p-fsvh2892-2-e)
 
 ## Environment
-Verilog HDL · Xilinx Vivado · AWS F1 FPGA
+Verilog HDL · Xilinx Vivado · AWS EC2 F2 FPGA (VU47P)
